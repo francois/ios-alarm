@@ -7,10 +7,11 @@
 //
 
 #import "AlarmViewController.h"
+#import "SleepPeriod.h"
 
 @implementation AlarmViewController
 
-@synthesize sleeping, bedTime, wakeupTime, asleepSecondsInLastCycle, bedtimeDisplay, hoursOfSleepDisplay;
+@synthesize currentPeriod, bedtimeDisplay, hoursOfSleepDisplay;
 
 /*
 // The designated initializer. Override to perform setup that is required before the view is loaded.
@@ -29,6 +30,7 @@
 
   self.hoursOfSleepDisplay.hidden = YES;
   self.bedtimeDisplay.hidden = YES;
+  self.periods = [NSMutableArray array];
 }
 
 
@@ -44,11 +46,12 @@
 	// Release any cached data, images, etc that aren't in use.
   [formatter release];
   formatter = nil;
+  
+  self.currentPeriod = nil;
 }
 
 - (void)viewDidUnload {
-  self.bedTime = nil;
-  self.wakeupTime = nil;
+  self.currentPeriod = nil;
   self.bedtimeDisplay = nil;
   self.hoursOfSleepDisplay = nil;
 
@@ -72,25 +75,18 @@
 #
 
 -(IBAction)goToBed:(id)sender {
-  self.bedTime = [NSDate date];
+  self.currentPeriod = [SleepPeriod initWithBedtimeToNow];
   [self ensureFormatter];
-  self.bedtimeDisplay.text = [formatter stringFromDate:self.bedTime];
+  self.bedtimeDisplay.text = [formatter stringFromDate:self.currentPeriod.bedtime];
   self.bedtimeDisplay.hidden = NO;
-  self.sleeping = YES;
 }
 
 -(IBAction)wakeUp:(id)sender {
-  self.wakeupTime = [NSDate date];
-  self.asleepSecondsInLastCycle = [self.wakeupTime timeIntervalSinceDate:self.bedTime];
+  [self.currentPeriod wakeup];
 
   [self ensureFormatter];
-  int hours, minutes;
-  hours = self.asleepSecondsInLastCycle / 60 / 60;
-  minutes = (self.asleepSecondsInLastCycle - hours * 60 * 60) / 60;
-  self.hoursOfSleepDisplay.text = [NSString stringWithFormat:@"%d:%02d", hours, minutes];
-  NSLog(@"asleepSeconds: %g", self.asleepSecondsInLastCycle);
+  self.hoursOfSleepDisplay.text = [self.currentPeriod durationInHoursMinutes];
   self.hoursOfSleepDisplay.hidden = NO;
-  self.sleeping = NO;
 }
 
 @end

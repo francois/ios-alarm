@@ -8,16 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@class SleepPeriod;
+
 @interface AlarmViewController : UIViewController {
   UILabel *bedtimeDisplay;
   UILabel *hoursOfSleepDisplay;
   NSDateFormatter *formatter;
 }
 
-@property (nonatomic, assign) BOOL sleeping;
-@property (nonatomic, copy) NSDate *bedTime;
-@property (nonatomic, copy) NSDate *wakeupTime;
-@property (nonatomic, assign) NSTimeInterval asleepSecondsInLastCycle;
+@property (nonatomic, retain) SleepPeriod *currentPeriod;
 
 @property (nonatomic, retain) IBOutlet UILabel *bedtimeDisplay;
 @property (nonatomic, retain) IBOutlet UILabel *hoursOfSleepDisplay;
