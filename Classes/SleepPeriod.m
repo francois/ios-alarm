@@ -43,4 +43,8 @@
   return [NSString stringWithFormat:@"%d:%02d", [self durationInHours], [self durationInMinutes]];
 }
 
+-(NSString *)description {
+  return [NSString stringWithFormat:@"%@ / %@", self.bedtime, self.wakeuptime];
+}
+
 @end

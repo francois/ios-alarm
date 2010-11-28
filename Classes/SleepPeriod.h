@@ -24,7 +24,7 @@
 
 -(void)gotoBed;
 -(void)wakeup;
-  
+
 +(SleepPeriod *)initWithBedtimeToNow;
 
 @end
